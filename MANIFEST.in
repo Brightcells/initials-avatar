@@ -1,0 +1,3 @@
+include initials_avatar/resource/fonts/*.ttc
+include initials_avatar/resource/fonts/*.ttf
+include initials_avatar/resource/images/*.png
