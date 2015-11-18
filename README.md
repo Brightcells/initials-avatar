@@ -1,7 +1,7 @@
 # initials-avatar
 Initials Avatar for Python
 
-Inspired by [holys](https://github.com/holys)'s https://github.com/Brightcells/initials-avatar
+Inspired by [holys](https://github.com/holys)'s https://github.com/holys/initials-avatar
 
 ## Installation
 
