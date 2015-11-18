@@ -45,3 +45,12 @@ Method
     def avatar(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None, path=None, name=None):
 
     def bytes(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None):
+
+
+Font
+====
+
+::
+
+    simsun.ttc —— has already packaged in the source code
+
