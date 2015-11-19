@@ -3,13 +3,13 @@ Initials Avatar for Python
 
 Inspired by [holys](https://github.com/holys)'s https://github.com/holys/initials-avatar
 
-## Installation
+#### Installation
 
 ```
     pip install initials_avatar
 ```
 
-# Usage
+#### Usage
 ```
     Python 2.7.5 (default, Mar  9 2014, 22:15:05)
     Type "copyright", "credits" or "license" for more information.
@@ -31,15 +31,34 @@ Inspired by [holys](https://github.com/holys)'s https://github.com/holys/initial
     In [4]:
 ```
 
-# Method
+#### Method
 
 ```
     def avatar(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None, path=None, name=None):
 
     def bytes(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None):
+    
+    def svg(self, text, size=48, circle=False, radius=0, font_family='simsun', font_size=None, color=None, background=None, path=None, name=None):
 ```
 
-# Font
+#### Font
 ```
     simsun.ttc —— has already packaged in the source code
 ```
+
+#### SVG vs PNG
+* SVG: Small in Size
+* PNG: Multi Plat Support
+
+
+# server.sh 使用
+#### Permission
+```
+    chmod 755 server.sh
+```
+#### Exec
+```
+    ./server.sh
+```
+#### Visit in Browser
+[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
