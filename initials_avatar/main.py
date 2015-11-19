@@ -76,8 +76,8 @@ class InitialsAvatar(object):
         text = text.strip()
         return text[0] if text else None
 
-    def background(self, initial):
-        return self.HashRing.get_node(initial.encode('unicode_escape')) or self.DEFAULT_BACKGROUND
+    def background(self, text):
+        return self.HashRing.get_node(text.encode('unicode_escape')) or self.DEFAULT_BACKGROUND
 
     def filename(self, path, name, fmt):
         return u'{path}{name}.{fmt}'.format(path=path or self.TEMP_PATH, name=name or time.time(), fmt=fmt)
@@ -117,7 +117,7 @@ class InitialsAvatar(object):
         # hash_ring.get_node doesn't Support Unicode
         # UnicodeEncodeError: 'ascii' codec can't encode character u'\u9ec4' in position 0: ordinal not in range(128)
         # So do unicode_escape by initial.encode('unicode_escape')
-        background = background or self.background(initial)
+        background = background or self.background(text)
         im = Image.new('RGBA', (size, size), background)
 
         if not text:
@@ -194,7 +194,7 @@ class InitialsAvatar(object):
         """
         initial = self.initial(text)
         radius = 99999 if circle else radius
-        background = background or 'rgba{rgba}'.format(rgba=self.background(initial))
+        background = background or 'rgba{rgba}'.format(rgba=self.background(text))
         font_size = font_size or int(size * 0.7)
         svg = self.SVG.format(size=size, radius=radius, backgroud=background, color=color or self.DEFAULT_FONT_COLOR, font_family=font_family, font_size=font_size, initial=initial)
         filename = self.filename(path, name, 'svg')
