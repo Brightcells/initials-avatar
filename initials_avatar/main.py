@@ -41,6 +41,7 @@ class InitialsAvatar(object):
         self.BASE_DIR = os.path.dirname(os.path.abspath(__file__))
         self.SRC_DIR = os.path.join(self.BASE_DIR, 'resource')
         self.FONT_DIR = os.path.join(self.SRC_DIR, 'fonts')
+        self.TEMP_PATH = '/tmp/'
         self.DEFAULT_FONT_COLOR = '#fff'
         self.DEFAULT_BACKGROUND = (69, 189, 243, 255)
         self.HashRing = HashRing([
@@ -54,6 +55,17 @@ class InitialsAvatar(object):
             (121, 134, 203, 255),
             (241, 185, 29, 255)
         ])
+        self.SVG = u"""
+        <svg xmlns="http://www.w3.org/2000/svg" width="{size}px" height="{size}px" style="border-radius:{radius}px;border-top-left-radius:{radius}px;border-top-right-radius:{radius}px;border-bottom-right-radius:{radius}px;border-bottom-left-radius:{radius}px">
+            <g>
+                <rect x="0" y="0" fill="{backgroud}" width="{size}px" height="{size}px">
+                </rect>
+                <text y="50%" x="50%" fill="{color}" text-anchor="middle" dominant-baseline="central" style="font-family: {font_family}; font-size: {font_size}px">
+                  {initial}
+                </text>
+            </g>
+        </svg>
+        """
 
     def initial(self, text):
         """
@@ -63,6 +75,12 @@ class InitialsAvatar(object):
         """
         text = text.strip()
         return text[0] if text else None
+
+    def background(self, initial):
+        return self.HashRing.get_node(initial.encode('unicode_escape')) or self.DEFAULT_BACKGROUND
+
+    def filename(self, path, name, fmt):
+        return u'{path}{name}.{fmt}'.format(path=path or self.TEMP_PATH, name=name or time.time(), fmt=fmt)
 
     def corner(self, im, radius):
         """
@@ -99,7 +117,7 @@ class InitialsAvatar(object):
         # hash_ring.get_node doesn't Support Unicode
         # UnicodeEncodeError: 'ascii' codec can't encode character u'\u9ec4' in position 0: ordinal not in range(128)
         # So do unicode_escape by initial.encode('unicode_escape')
-        background = background or self.HashRing.get_node(initial.encode('unicode_escape')) or self.DEFAULT_BACKGROUND
+        background = background or self.background(initial)
         im = Image.new('RGBA', (size, size), background)
 
         if not text:
@@ -139,9 +157,9 @@ class InitialsAvatar(object):
         :return:
         """
         initial, im = self.image(text, size=size, font=font, circle=circle, radius=radius, color=color, background=background)
-        file_name = u'{path}{name}.{fmt}'.format(path=path or '/tmp/', name=name or time.time(), fmt=fmt)
-        im.save(file_name, format=fmt, optimize=True, quality=quality)
-        return file_name
+        filename = self.filename(path, name, fmt)
+        im.save(filename, format=fmt, optimize=True, quality=quality)
+        return filename
 
     def bytes(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None):
         """
@@ -159,8 +177,34 @@ class InitialsAvatar(object):
         im.save(out, format=fmt, optimize=True, quality=quality)
         return out.getvalue()
 
+    def svg(self, text, size=48, circle=False, radius=0, font_family='simsun', font_size=None, color=None, background=None, path=None, name=None):
+        """
+        GET SVG Avatar
+        :param text:
+        :param size:
+        :param circle:
+        :param radius:
+        :param font_family:
+        :param font_size:
+        :param color:
+        :param background:
+        :param path: With trailing slash!
+        :param name:
+        :return:
+        """
+        initial = self.initial(text)
+        radius = 99999 if circle else radius
+        background = background or 'rgba{rgba}'.format(rgba=self.background(initial))
+        font_size = font_size or int(size * 0.7)
+        svg = self.SVG.format(size=size, radius=radius, backgroud=background, color=color or self.DEFAULT_FONT_COLOR, font_family=font_family, font_size=font_size, initial=initial)
+        filename = self.filename(path, name, 'svg')
+        with open(filename, 'w') as f:
+            f.write(svg.encode('utf8'))
+        return filename
+
 
 # For backwards compatibility
 _global_instance = InitialsAvatar()
 avatar = _global_instance.avatar
 bytes = _global_instance.bytes
+svg = _global_instance.svg

@@ -46,6 +46,8 @@ Method
 
     def bytes(self, text, size=48, circle=False, radius=0, font='simsun.ttc', fmt='png', quality=100, color=None, background=None):
 
+    def svg(self, text, size=48, circle=False, radius=0, font_family='simsun', font_size=None, color=None, background=None, path=None, name=None):
+
 
 Font
 ====
@@ -54,3 +56,11 @@ Font
 
     simsun.ttc —— has already packaged in the source code
 
+
+SVG vs PNG
+==========
+
+::
+
+    SVG: Small in Size
+    PNG: Multi Plat Support
