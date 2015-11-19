@@ -1,6 +1,8 @@
 # initials-avatar
 Initials Avatar for Python
 
+Generate an avatar image from a user's initials. Image background color depends on name hashes(consistent hashing).
+
 Inspired by [holys](https://github.com/holys)'s https://github.com/holys/initials-avatar
 
 #### Installation
